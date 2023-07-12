@@ -26,3 +26,8 @@ The potential for supplementary data was also explored at this point. Specifical
 
 ### Data Preprocessing
 
+Data preprocessing began by reading in the bank-additional-full.csv file with all 41,188 data observations and 20 inputs. Next, the value counts of the dependpent variable were checked to determine the balance of the dataset. The "positive" class (clients who subscribed to a term deposit) only consisted of 4,640 observations, or about 11.27% of the datasets total observations. This indicates an unbalanced dataset. If more time was given for this project, additional preprocessing steps would have been taken such as synthetic data generation with ADASYN or SMOTE undersampling/oversampling in order to balance the dataset and improve overall model accuracy. However, for the purposes of this project models were built using the unbalanced data.
+
+An outlier check was conducted to explore the shape of the data and identify any worrisome observations. 
+
+Lastly, all categorical variables were one-hot encoded to conclude data preprocessing.
