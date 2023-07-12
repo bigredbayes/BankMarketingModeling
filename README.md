@@ -1,3 +1,3 @@
 # BankMarketingModeling
 
-![image info](C:/Users/steph/OneDrive/Desktop/Bank_Marketing_Pipeline.png)
+![image info](https://github.com/bigredbayes/BankMarketingModeling/blob/main/Bank_Marketing_Pipeline.png)
