@@ -34,5 +34,6 @@ Lastly, all categorical variables were one-hot encoded to conclude data preproce
 
 ### Feature Selection
 
+Two methods were used for feature selection in the dataset. The first method was univariate selction, which determined the strength of the relationship between each variable and the class. For this process all features were assigned numeric values so that the tests could be conducted. While a Chi-squared test would be appropriate here, some features contained
 
 Once the data preprocessing and feature selection was finalized, the final dataset was split into training and testing subsets using a 80-20 split.
