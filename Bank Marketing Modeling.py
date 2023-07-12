@@ -46,7 +46,6 @@ print('Data successfully loaded.\n')
 print('The value counts for the dependent variable are as follows:')
 print(df['label'].value_counts(),'\n')
 
-
 # ## Data Preprocessing
 
 # Begin data preprocessing
@@ -91,6 +90,13 @@ for var in range(len(features)):
         df.drop([features.Variable[var]],axis=1,inplace=True)
 print('Only the top 10 features are kept for correlation assessment.\n')
 
+# Plot Feature F-Scores
+features = features.sort_values(by=['Score'],ascending=False)
+features.plot(kind="bar",x='Variable',color=['black'],label='F-Score')
+plt.title("Assesing Impact of Inputs\n",fontsize=20)
+plt.xlabel("\nFeatures",fontsize=12)
+plt.ylabel("F-Score",fontsize=12)
+
 # Creating a correlation matrix to check for any correlated variables, an correlation greater than 0.9 will result in variables being removed
 
 # Create correlation matrix
@@ -134,7 +140,6 @@ for col in num_vars:
     else:
         df_sans_outliers = find_outliers_IQR(df_sans_outliers,col)
 df_sans_outliers = df_sans_outliers.reset_index(drop=True)
-
 
 # Ultimately, I see no reason to remove outliers as most feature distributions are skewed and no singular data point is adding unecessary weight to future models. Keeping these "outliers" actually assists the model in drawing boundaries between classes. Additionally, more "positive" data points (i.e. the respondent suscribed to the bank, label=1) are kept in the dataset resulting in a higher overall proportion than the dataset without outliers
 
@@ -195,8 +200,8 @@ def optimize_model(model,hyperparams,X_train,Y_train,X_test,Y_test):
         hyperparams,
         n_iter=50,
         cv=3,
-        # using the neg_brier_score metric for hyperparameter selection as it best measures unbalanced datasets
-        scoring='neg_brier_score'
+        # using the f1_macro metric for hyperparameter selection as it factors in true positives in both classes
+        scoring='neg_brier_score'#'accuracy'#'f1_macro'
     )
     
     # Fit the training data to the optimized model
@@ -387,4 +392,23 @@ print(metrics_df)
 final_metrics = metrics_df.style.highlight_max(subset=['Accuracy','F_Score','ROC-AUC']).highlight_min(subset=['Log Loss','Brier Score'])
 final_metrics
 
+# Plot accuracies
+
+metrics_df['Accuracy'].plot(kind="bar",color=['red','green','blue'])
+plt.ylim(85,95)
+plt.title("Comparing Model Accuracy\n",fontsize=20)
+plt.xlabel("\nModel Type",fontsize=12)
+plt.ylabel("Model Accuracy",fontsize=12)
+
+# Plot Brier Scores
+
+metrics_df['Brier Score'].plot(kind="bar",color=['red','green','blue'])
+plt.title("Comparing Model Brier Scores\n",fontsize=20)
+plt.xlabel("\nModel Type",fontsize=12)
+plt.ylabel("Brier Score (lower is better)",fontsize=12)
+
 print('Random Forest was determined to be the best model for predicting successful bank marketing calls.')
+
+
+
+
