@@ -1,6 +1,6 @@
 # Bank Marketing Modeling
 
-This README.md will act as technical documentation for the machine learning pipeline implemented on the Bank Marketing dataset from the UCI Machine Learning Repository. The data can be found [here](https://archive.ics.uci.edu/dataset/222/bank+marketing). A Portuguese banking institution derived the dataset from a direct marketing campaign made via phone calls. This project aims to accurately predict the success of future campaigns based on the attributes listed in the dataset, implementing a high-preforming machine learning model. The generalized ML pipeline is outlined in the diagram below.
+This README.md will act as technical documentation for the machine learning pipeline implemented on the Bank Marketing dataset from the UCI Machine Learning Repository. The data can be found [here](https://archive.ics.uci.edu/dataset/222/bank+marketing). A Portuguese banking institution derived the dataset from a direct marketing campaign made via phone calls. This project aims to accurately predict the success of future campaigns based on the attributes listed in the dataset, implementing a high-preforming machine learning model. The generalized ML pipeline is outlined in the diagram below with black boxes indicating problem/solution steps, yellow boxes referencing data-related steps, anf blue boxes representing model building steps.
 
 ![A generalized Machine Learning Pipeline for this project.](https://github.com/bigredbayes/BankMarketingModeling/blob/main/Bank_Marketing_Pipeline.png)
 
@@ -42,4 +42,16 @@ With more time, feature selection would have been done using feature importance 
 
 ### Model Training
 
+Three different model types were selected for training: random forest, logistic regression, and naive bayes. A neural network and support vecter machine were also considered, but were not fully trained for different reasons. The neural network needed its own optimization framework using tensorflow and keras which would take hours to run- too much time for this project. Initial trainings of the support vector machine algorithm did not perform well, so it was discarded in favor of the other three working models.
 
+Data prep and optimization functions were built to train the models. The data prep function split the training data into new training and validation data subsets using an 80-20 split. The optimization function assessed each models potential hyperparameters and selected the best performing ones. Optimization was done utilizing the BayesSearchCV from scikit-learn, a Bayesian search optimization. BayesSearchCV was chosen over other optimization functions because it was less computationally expensive than GridSearchCV, which tries all possible combinations of hyperparameters, and it is more structured in its sampling than RandomSearchCV. Each optimization was iterated 50 times and used 3-fold cross validation. Lastly, each model's brier score ultimately determined which set of hyperparameters optimized the model. Brier score was selected over traditional metrics like accuracy, precision, and recall because it is better suited for assessing model performance on unbalanced datasets.
+
+All three models were built and trained using their respective scikit-learn functions. Additionally, each model had its own defined class in the pipeline which was called upon to prep the data, build an initial model, optimize the model parameters, and return a final model with its validation performance. The final, optimized model for each algorithm was then passed to the model testing portion of the pipeline.
+
+### Model Evaluation
+
+Each model was evaluated on several criteria to compare their strengths and judge any potential weak points. Model accuracy was used as a baseline metric to determine if the model could beat random guessing. However, accuracy is not the best metric when assessing an unbalanced dataset. The model F1-score is included as an aggregate of the precision and recall of each model, determining the impact of true positives in the confusion matrix. Another traditional metric used to judge the final models was the area under the receiver operating characteristic curve (ROC-AUC), which is a hallmark of a robust model. Log loss was also included in the criteria to indicate how close the model predictions were to their true values. Brier scores do the same, but function especially well on unbalanced datasets such as the Bank Marketing one. Both log loss and the brier scores are better when lower, whereas the other three metrics should be maximized as much as possible.
+
+After setting the evaluation metrics, each model was run using the test data. A model testing class returned all five metrics that were previously mentioned in addition to their respective confusion matrices.
+
+### Final Model Selection
