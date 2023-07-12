@@ -6,7 +6,6 @@ This README.md will act as technical documentation for the machine learning pipe
 
 This document will follow the steps outlined in the ML pipeline above, giving exaplanations for technical considerations and decisions made along the way. The following list summarizes each step in the process:
 
-1) Problem Indentification-
+1) Problem Identification- Indentifies the problem
 
 ### Problem Identification
-blah blah
